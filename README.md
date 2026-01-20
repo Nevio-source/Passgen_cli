@@ -34,6 +34,8 @@ E#t    ;##D.    L##, EG.      EG.              .G#t        tt ..         G#E
 8. [Stärken](#stärken)  
 9. [Fazit](#fazit)
 10. [Instalation](#instalation)
+11. [Externe-Hilfe](#externe-hilfe)
+    
 
 ---
 
@@ -207,6 +209,14 @@ in all copies or substantial portions of the Software.
 3. Navigieren sie zum Donwload Ordner
 4. Öfnnen sie dass terminal und geben sie mit diesem befehl ``` sudo chmod+x Passgen-linux-binary ``` die nötigen berechtigungen
 5. Starten sie dass Programm mit ```./Passgen-linux-binary```
+---
+##Externe-Hilfe
+Beim Erstellen des Codes habe ich folgende Hilfen genutzt:
+- Online‑Dokumentation zur HIBP‑API und SHA‑Hash‑Methoden
+- StackOverflow zur Fehlersuche bei API‑Anfragen
+- ChatGPT für Textformulierungen und Strukturierung des READMEs
+
+Ich habe **keine KI‑generierten Code‑Blöcke verwendet**, sondern nur zur **Sprachhilfe** und zur Erklärung von Konzepten.
 
 
 
