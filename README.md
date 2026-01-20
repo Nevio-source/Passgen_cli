@@ -1,7 +1,6 @@
 # PassGen 🔐
 
-                                                                  
-                                                                  
+```
                              .                    ,;L.            
 t                            ;W       ;W        .Gt       f#i EW:        ,ft
 ED.               ..        f#E      f#E       j#W:     .E#t  E##;       t#E
@@ -16,6 +15,7 @@ E#t     :K#K:   L##, ,WK,     ,WK,            j###t      .D#; E#t      .E##E
 E#t    ;##D.    L##, EG.      EG.              .G#t        tt ..         G#E
        ,,,      .,,  ,        ,                  ;;                       fE
 
+```
 **Created By:**
 @Nevio_Pongiluppi
 
@@ -146,4 +146,5 @@ Um **PassGen** auf Ihrem System auszuführen, wählen Sie die passende Version:
 ```bash
 chmod +x PassGen
 ./PassGen
+```
 
