@@ -128,3 +128,5 @@ Um **PassGen** auf Ihrem System auszuführen, wählen Sie die passende Version:
 
 ```bash
 chmod +x PassGen
+./PassGen
+
