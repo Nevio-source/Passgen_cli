@@ -210,7 +210,7 @@ in all copies or substantial portions of the Software.
 4. Öfnnen sie dass terminal und geben sie mit diesem befehl ``` sudo chmod+x Passgen-linux-binary ``` die nötigen berechtigungen
 5. Starten sie dass Programm mit ```./Passgen-linux-binary```
 ---
-##Externe-Hilfe
+## Externe-Hilfe
 Beim Erstellen des Codes habe ich folgende Hilfen genutzt:
 - Online‑Dokumentation zur HIBP‑API und SHA‑Hash‑Methoden
 - StackOverflow zur Fehlersuche bei API‑Anfragen
