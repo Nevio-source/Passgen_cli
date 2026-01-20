@@ -1,6 +1,23 @@
 # PassGen 🔐
 
-**Created By:** Nevio
+                                                                  
+                                                                  
+                             .                    ,;L.            
+t                            ;W       ;W        .Gt       f#i EW:        ,ft
+ED.               ..        f#E      f#E       j#W:     .E#t  E##;       t#E
+E#K:             ;W,      .E#f     .E#f      ;K#f      i#W,   E###t      t#E
+E##W;           j##,     iWW;     iWW;     .G#D.      L#D.    E#fE#f     t#E
+E# ##t         G###,    L##Lffi  L##Lffi  j#K;      :K#Wfff;  E#t D#G    t#E
+E#  ##f      :E####,   tLLG##L  tLLG##L ,K#f   ,GD; i##WLLLLt E#t  f#E.  t#E
+E#t ;##D.   ;W#/G##,     ,W#i     ,W#i   j#Wi   E#t  .E#L     E#t   t#K: t#E
+E#ELLE##K: j##/ W##,    j#E.     j#E.     .G#D: E#t    f#E:   E#t    ;#W,t#E
+E#L;;;;;;,G##i,,G##,  .D#j     .D#j         ,K#fK#t     ,WW;  E#t     :K#D#E
+E#t     :K#K:   L##, ,WK,     ,WK,            j###t      .D#; E#t      .E##E
+E#t    ;##D.    L##, EG.      EG.              .G#t        tt ..         G#E
+       ,,,      .,,  ,        ,                  ;;                       fE
+
+**Created By:**
+@Nevio_Pongiluppi
 
 ---
 
