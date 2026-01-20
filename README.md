@@ -144,7 +144,7 @@ Um **PassGen** auf Ihrem System auszuführen, wählen Sie die passende Version:
 2. Machen Sie das Binary ausführbar:
 
 ```bash
-chmod +x PassGen
-./PassGen
+chmod +x Passgen
+./Passgen
 ```
 
