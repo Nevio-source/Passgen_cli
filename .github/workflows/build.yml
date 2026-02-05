@@ -54,6 +54,7 @@ jobs:
 
       - name: Build Debian package
         run: |
+          DEB_VER="${VERSION#v}" # entfernt 'v' falls Tag 'v1.0.0'
           mkdir -p pkg/usr/local/bin
           cp dist/Passgen_cli pkg/usr/local/bin/
           chmod 755 pkg/usr/local/bin/Passgen_cli
@@ -61,7 +62,7 @@ jobs:
           mkdir -p pkg/DEBIAN
           cat <<EOF > pkg/DEBIAN/control
           Package: passgen-cli
-          Version: ${VERSION#v}
+          Version: $DEB_VER
           Architecture: amd64
           Maintainer: $(git config user.name)
           Description: Passgen_cli - Passwortgenerator für CLI
@@ -70,13 +71,13 @@ jobs:
           EOF
 
           dpkg-deb --build pkg
-          mv pkg.deb passgen-cli_${VERSION#v}_amd64.deb
+          mv pkg.deb passgen-cli_${DEB_VER}_amd64.deb
 
       - name: Upload Debian package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: deb-${{ env.VERSION }}
-          path: passgen-cli_${{ env.VERSION#v }}_amd64.deb
+          name: deb-package
+          path: passgen-cli_*.deb
 
   release-assets:
     name: Upload to GitHub Release
