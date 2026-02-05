@@ -31,7 +31,7 @@ namespace myapp
                    ,,,      .,,  ,        ,                  ;;                       fE
             
             Created By
-            @Nevio_Pongiluppi
+            @Nevio_source
 
             """;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -126,7 +126,7 @@ namespace myapp
                 {
                     i++;
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("API error → retrying in 500ms...");
+                    Console.WriteLine("Time error → retrying in 500ms...");
                     Console.ForegroundColor = ConsoleColor.White;
                     await Task.Delay(500); // Short pause to prevent spaming 
                 }
@@ -186,7 +186,7 @@ namespace myapp
                 Console.Write("(Y/N)>");
                 string unicodeyn = Console.ReadLine();
 
-                if (lengthInput == "Nevio_Pongiluppi")
+                if (lengthInput == "Nevio_source")
                 {
                     try
                     {
