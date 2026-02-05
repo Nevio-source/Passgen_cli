@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+
 
 
 namespace myapp
@@ -96,20 +98,16 @@ namespace myapp
             {
                 try
                 {
-                    //api rng
-                    string json = await client.GetStringAsync("http://78.46.176.247:8080/api");
+                    //rng
 
-                    if (string.IsNullOrWhiteSpace(json))
-                        throw new Exception("Empty response");
+                    DateTime terryBirth = new DateTime(1969, 12, 15, 0, 0, 0, DateTimeKind.Utc);
+                    DateTime now = DateTime.UtcNow;
 
-                    using JsonDocument doc = JsonDocument.Parse(json);
+                    // Sec since Birth
+                    double secondsSince = (now - terryBirth).TotalSeconds;
+                    byte[] data = BitConverter.GetBytes(secondsSince);
+                    byte[] hash = SHA256.HashData(data);
 
-                    string? hash = doc.RootElement.GetProperty("sha256").GetString();
-
-                    if (string.IsNullOrWhiteSpace(hash))
-                        throw new Exception("sha256 missing or null");
-
-                    byte[] hashFromApibytes = Convert.FromHexString(hash);
 
                     //system rng
                     byte[] randomData1 = new byte[32];
@@ -117,10 +115,7 @@ namespace myapp
                     byte[] hash_21 = SHA256.HashData(randomData1);
 
 
-
-
-
-                    using var hmac = new HMACSHA256(hashFromApibytes);
+                    using var hmac = new HMACSHA256(hash);
                     byte[] combinedHashBytes = hmac.ComputeHash(hash_21);
 
 
@@ -178,7 +173,7 @@ namespace myapp
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("(default 20)");
                 Console.ResetColor();
-                Console.WriteLine("Note: input cannot be higher than 200");
+                Console.WriteLine("Note: input cannot be higher than 1000");
                 Console.WriteLine();
                 Console.Write(">");
                 string lengthInput = Console.ReadLine();
@@ -226,15 +221,15 @@ namespace myapp
                     Console.ResetColor();
                     length_re = 20;
                 }
-                else if (length_re > 200)
+                else if (length_re > 1000)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR user input higher than 200");
+                    Console.WriteLine("ERROR user input higher than 1000");
                     await Task.Delay(500);
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Setting user input to 200");
+                    Console.WriteLine("Setting user input to 1000");
                     Console.ResetColor();
-                    length_re = 200;
+                    length_re = 1000;
                 }
                 string hash = await gethash();
                 byte[] bytes = Convert.FromHexString(hash);
