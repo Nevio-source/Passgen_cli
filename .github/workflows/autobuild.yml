@@ -13,6 +13,9 @@ jobs:
 
     - name: Install curl
       run: sudo apt-get update && sudo apt-get install -y curl
+
+    - name: Install dpkg-deb
+      run: sudo apt-get update && sudo apt-get install -y dpkg
       
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
