@@ -1,0 +1,56 @@
+name: Build Debian & Windows Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build binaries
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            container: debian:bookworm-slim
+            target: linux-x64
+          - runner: windows-latest
+            container: null
+            target: win-x64
+
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install prerequisites (Debian)
+        if: matrix.container != null
+        run: |
+          apt-get update
+          apt-get install -y curl ca-certificates
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build release binary
+        run: |
+          dotnet publish \
+            -c Release \
+            -r ${{ matrix.target }} \
+            --self-contained true \
+            /p:PublishSingleFile=true \
+            /p:IncludeAllContentForSelfExtract=true
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.target }}
+          path: |
+            **/bin/Release/net8.0/${{ matrix.target }}/publish/**
