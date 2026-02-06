@@ -78,6 +78,5 @@ jobs:
           ./passgen_cli_${{ github.ref_name }}_amd64.deb
         tag: ${{ github.ref_name }}
         allowUpdates: true
-        replacesArtifacts: true
 
 
