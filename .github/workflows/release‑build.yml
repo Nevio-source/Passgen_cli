@@ -1,54 +1,78 @@
-name: Build Releases
+name: Build and Publish Release Assets
 
 on:
   release:
-    types: [created]
+    types: [published]       # ← changed to published (most common choice)
+
+permissions:
+  contents: write            # Required to upload assets to the release
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build Linux
-      run: |
-        dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/linux
-      shell: bash
+      # Adjust "PassgenCli" to your actual project/executable name!
+      - name: Build Linux (single-file)
+        run: |
+          dotnet publish -c Release -r linux-x64 --self-contained true \
+            /p:PublishSingleFile=true \
+            --output ./publish/linux
 
-    - name: Build Windows
-      run: |
-        dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/windows
-      shell: bash
+      - name: Build Windows (single-file)
+        run: |
+          dotnet publish -c Release -r win-x64 --self-contained true \
+            /p:PublishSingleFile=true \
+            --output ./publish/windows
 
-    - name: Install fpm
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ruby ruby-dev build-essential
-        sudo gem install --no‑document fpm
+      - name: Install fpm (effing package management)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby ruby-dev build-essential
+          sudo gem install --no-document fpm
 
-    - name: Create Debian package
-      run: |
-        VERSION=${{ github.event.release.tag_name }}
-        fpm -s dir -t deb -n passgencli -v $VERSION \
-          --prefix /usr/local/bin ./publish/linux/
-      shell: bash
+      - name: Create Debian package
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          # Remove 'v' prefix if your tags are v1.2.3 → 1.2.3
+          VERSION="${VERSION#v}"
 
-    - name: Upload Release Assets
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: |
-          publish/linux/Passgen*
-          publish/windows/Passgen*.exe
-          passgencli_${{ github.event.release.tag_name }}_amd64.deb
-        tag: ${{ github.event.release.tag_name }}
+          fpm -s dir -t deb \
+            -n passgencli \
+            -v "$VERSION" \
+            --iteration 1 \
+            --architecture amd64 \
+            --prefix /usr/local/bin \
+            --maintainer "Your Name <your.email@example.com>" \
+            --description "Password generator CLI tool" \
+            --url "https://github.com/yourusername/yourrepo" \
+            --license "MIT" \
+            ./publish/linux/passgencli=/usr/local/bin/passgencli
+
+          # Optional: also zip/tar the binaries for easier download
+          zip -j passgencli-linux-x64.zip ./publish/linux/passgencli
+          zip -j passgencli-windows-x64.zip ./publish/windows/passgencli.exe
+
+      - name: Upload Release Assets
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: >
+            ./publish/linux/passgencli,
+            ./publish/windows/passgencli.exe,
+            ./passgencli_*.deb,
+            ./passgencli-linux-x64.zip,
+            ./passgencli-windows-x64.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
