@@ -34,6 +34,8 @@ jobs:
         dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/windows
       shell: bash
 
+      # This part fails for some reason all the time
+
     - name: Install fpm
       run: |
         sudo apt-get update
@@ -41,7 +43,7 @@ jobs:
         sudo gem install --no-document fpm
       shell: bash
 
-    
+    #########################################################################
     
     - name: Create Debian package
       run: |
