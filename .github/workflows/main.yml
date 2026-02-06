@@ -68,15 +68,51 @@ jobs:
         echo "Current directory:"
         ls
 
+    - name: List files to upload
+      run: |
+        ls -l ./publish/linux/passgen_cli
+        ls -l ./publish/windows/passgen_cli.exe
+        ls -l ./passgen_cli_${{ steps.get_version.outputs.VERSION }}_amd64.deb
 
+
+    - name: Get release
+      id: get_release
+      uses: bruceadams/get-release@v1.3.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+
+    
     - name: Upload Release Assets
-      uses: ncipollo/release-action@v1
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        artifacts: |
-          ./publish/linux/passgen_cli
-          ./publish/windows/passgen_cli.exe
-          ./passgen_cli_${{ github.ref_name }}_amd64.deb
-        tag: ${{ github.ref_name }}
-        allowUpdates: true
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ./publish/linux/passgen_cli
+        asset_name: passgen_cli_linux
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Windows Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ./publish/windows/passgen_cli.exe
+        asset_name: passgen_cli_windows.exe
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Debian Package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ./passgen_cli_${{ github.ref_name }}_amd64.deb
+        asset_name: passgen_cli_${{ github.ref_name }}_amd64.deb
+        asset_content_type: application/vnd.debian.binary-package
+    
+    
 
 
