@@ -1,0 +1,56 @@
+name: Build Releases
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install curl
+      run: sudo apt-get update && sudo apt-get install curl wget
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build Linux
+      run: |
+        dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/linux
+      shell: bash
+
+    - name: Build Windows
+      run: |
+        dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/windows
+      shell: bash
+
+    - name: Install fpm
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ruby ruby-dev build-essential
+        sudo gem install -no‑document fpm
+    - name: Create Debian package
+      run: |
+        VERSION=${{ github.event.release.tag_name }}
+        fpm -s dir -t deb -n passgencli -v $VERSION \
+          --prefix /usr/local/bin ./publish/linux/
+      shell: bash
+
+    - name: Upload Release Assets
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: |
+          publish/linux/Passgen*
+          publish/windows/Passgen*.exe
+          passgencli_${{ github.event.release.tag_name }}_amd64.deb
+        tag: ${{ github.event.release.tag_name }}
