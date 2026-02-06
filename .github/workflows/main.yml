@@ -38,7 +38,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ruby ruby-dev build-essential
-        sudo gem install --no‑document fpm
+        sudo gem install --no-document fpm
+      shell: bash
+
+    
+    
     - name: Create Debian package
       run: |
         VERSION=${{ github.event.release.tag_name }}
