@@ -8,6 +8,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
 
     steps:
     - name: Checkout code
@@ -34,7 +37,7 @@ jobs:
         dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true --output ./publish/windows
       shell: bash
 
-      # This part fails for some reason all the time
+      #######################################################################
 
     - name: Install fpm
       run: |
