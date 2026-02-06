@@ -55,6 +55,17 @@ jobs:
           --prefix /usr/local/bin ./publish/linux/
       shell: bash
 
+
+    - name: List directory contents
+      run: |
+        echo "Linux build:"
+        ls -R ./publish/linux
+        echo "Windows build:"
+        ls -R ./publish/windows
+        echo "Current directory:"
+        ls
+
+
     - name: Upload Release Assets
       uses: ncipollo/release-action@v1
       with:
