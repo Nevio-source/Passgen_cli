@@ -21,6 +21,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
+
     
     - name: Build Windows Binary
       run: dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true --self-contained true
