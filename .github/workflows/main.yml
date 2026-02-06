@@ -59,7 +59,10 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: |
-          publish/linux/Passgen*
-          publish/windows/Passgen*.exe
-          passgencli_${{ github.event.release.tag_name }}_amd64.deb
+          ./publish/linux/PassgenCLI
+          ./publish/windows/PassgenCLI.exe
+          ./passgencli_${{ github.event.release.tag_name }}_amd64.deb
         tag: ${{ github.event.release.tag_name }}
+        allowUpdates: true
+        replacesArtifacts: true
+
