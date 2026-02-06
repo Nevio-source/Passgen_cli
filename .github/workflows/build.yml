@@ -54,3 +54,73 @@ jobs:
           name: bin-${{ matrix.target }}
           path: |
             **/bin/Release/net8.0/${{ matrix.target }}/publish/**
+  package-deb:
+    name: Package Debian .deb
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      VERSION: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bin-linux-x64
+          path: dist
+
+      - name: Build Debian package
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DEB_VER="${VERSION#v}"
+
+          mkdir -p pkg/usr/local/bin
+          cp dist/Passgen_cli pkg/usr/local/bin/Passgen_cli
+          chmod 755 pkg/usr/local/bin/Passgen_cli
+
+          mkdir -p pkg/DEBIAN
+          cat <<EOF > pkg/DEBIAN/control
+Package: passgen-cli
+Version: ${DEB_VER}
+Architecture: amd64
+Maintainer: $(git config user.name || echo "Unknown")
+Section: utils
+Priority: optional
+Description: Passgen_cli - Passwortgenerator für CLI
+EOF
+
+          dpkg-deb --build pkg
+          mv pkg.deb passgen-cli_${DEB_VER}_amd64.deb
+
+      - name: Upload Debian package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-package
+          path: passgen-cli_*.deb
+
+  release-assets:
+    name: Upload to GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build, package-deb]
+    env:
+      VERSION: ${{ github.ref_name }}
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Upload assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          files: |
+            artifacts/**/*.exe
+            artifacts/**/*.deb
+            artifacts/**/Passgen_cli
+          overwrite: true
