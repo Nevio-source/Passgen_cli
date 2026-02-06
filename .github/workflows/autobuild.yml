@@ -14,7 +14,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '8.0.0'  # Anpassen an Ihre .NET Version
+        dotnet-version: '8.0'  # Anpassen an Ihre .NET Version
     
     - name: Build Windows Binary
       run: dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true --self-contained true
