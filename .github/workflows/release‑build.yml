@@ -10,8 +10,24 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - container: debian:bookworm-slim
+            rid: linux-x64
+          - os: windows-latest
+            rid: win-x64
+
+    container: ${{ matrix.container }}   # only set when defined
 
     steps:
+      - name: Install prerequisites (for Debian slim)
+        if: matrix.container != ''
+        run: |
+          apt-get update -y
+          apt-get install -y --no-install-recommends curl ca-certificates
+          rm -rf /var/lib/apt/lists/*
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -19,6 +35,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
+
+      # ... rest of your steps (restore, publish, etc.)
 
       - name: Restore dependencies
         run: dotnet restore
