@@ -31,12 +31,19 @@ jobs:
 
     - name: Build Linux
       run: |
-        dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true -o ./publish/linux
+        dotnet publish YourProjectName.csproj -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true -o ./publish/linux
 
     - name: Build Windows
       run: |
-        dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish/windows
+        dotnet publish YourProjectName.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish/windows
 
+
+    - name: Debug Build Process
+      run: |
+        echo "Current directory structure:"
+        ls -R
+        echo "dotnet --info:"
+        dotnet --info
 
 
       #######################################################################
@@ -70,9 +77,10 @@ jobs:
     - name: List build outputs
       run: |
         echo "Linux build output:"
-        ls -l ./publish/linux/
+        ls -R ./publish/linux/
         echo "Windows build output:"
-        ls -l ./publish/windows/
+        ls -R ./publish/windows/
+
 
 
 
@@ -90,20 +98,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
-        asset_path: ./publish/linux/passgen_cli
-        asset_name: passgen_cli_linux
+        asset_path: ./publish/linux/YourExecutableName
+        asset_name: YourExecutableName_linux
         asset_content_type: application/octet-stream
-    
+
     - name: Upload Windows Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
-        asset_path: ./publish/windows/passgen_cli.exe
-        asset_name: passgen_cli_windows.exe
+        asset_path: ./publish/windows/YourExecutableName.exe
+        asset_name: YourExecutableName_windows.exe
         asset_content_type: application/octet-stream
-    
+
 
 
 
