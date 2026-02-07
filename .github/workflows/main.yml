@@ -54,7 +54,7 @@ jobs:
 
         # Erstelle das Debian Paket mit passgen als Name
         fpm -s dir -t deb -n passgen -v $VERSION \
-          --prefix /usr/local/bin ./publish/linux/Passgen
+          --prefix /usr/local/bin ./publish/linux/Passgen=Passgen
 
         # Finde die erzeugte .deb Datei
         DEB_FILE=$(ls passgen_*_amd64.deb)
