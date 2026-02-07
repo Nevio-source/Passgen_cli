@@ -46,19 +46,20 @@ jobs:
 
     - name: Create Debian package
       run: |
-        # Entferne das führende 'v' aus der GitHub Release Tag
+        # Entferne das führende 'v' aus dem GitHub Release Tag
         VERSION="${{ github.event.release.tag_name }}"
         VERSION="${VERSION#v}"  # entfernt führendes 'v'
 
         echo "Building Debian package for version $VERSION"
 
-        # Erstelle das Debian Paket
-        fpm -s dir -t deb -n passgen-cli -v $VERSION \
+        # Erstelle das Debian Paket mit passgen als Name
+        fpm -s dir -t deb -n passgen -v $VERSION \
           --prefix /usr/local/bin ./publish/linux/Passgen
 
         # Finde die erzeugte .deb Datei
-        DEB_FILE=$(ls passgen-cli_*_amd64.deb)
+        DEB_FILE=$(ls passgen_*_amd64.deb)
         echo "deb_file=$DEB_FILE" >> $GITHUB_ENV
+
 
 
 
