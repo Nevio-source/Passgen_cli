@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Formats.Asn1;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -39,30 +41,42 @@ namespace myapp
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        static async Task<bool> Check_if_pawnd(string passwort)
+        static async Task<string> Check_if_pawnd(string passwort)
         {
             string hash = ComputeSHA1Hash(passwort).ToUpperInvariant();
 
             string five_first = hash.Substring(0, 5);
             string five_least = hash.Substring(5);
 
-            using HttpClient client = new HttpClient();
-            string response = await client.GetStringAsync("https://api.pwnedpasswords.com/range/" + five_first);
-
-            foreach (string line in response.Split('\n'))
+            try
             {
-                var parts = line.Split(':');
-                if (parts.Length != 2)
+                
+            
+
+                using HttpClient client = new HttpClient();
+                string response = await client.GetStringAsync("https://api.pwnedpasswords.com/range/" + five_first);
+
+                foreach (string line in response.Split('\n'))
                 {
-                    continue;
+                    var parts = line.Split(':');
+                    if (parts.Length != 2)
+                    {
+                        continue;
+                    }
+                    if (parts[0].Equals(five_least, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "true";
+                    }
+
                 }
-                if (parts[0].Equals(five_least, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
+                return "false";
+            }
+
+            catch
+            {
 
             }
-            return false;
+            return "0";
         }
 
 
@@ -137,6 +151,31 @@ namespace myapp
             return BitConverter.ToString(hash_2).Replace("-", "");
         }
 
+
+        static string ping()
+        {
+            string host = "8.8.8.8";
+            Ping ping = new Ping();
+            
+            try
+            {
+                PingReply reply = ping.Send(host, 3000); // Timeout 3 Sekunden
+                if (reply.Status == IPStatus.Success)
+                {
+                    return "up";
+                }
+                else
+                {
+                    return "down";
+                }
+            }
+            catch
+            {
+                return "down";
+            }
+        }
+
+
         static async Task Main(string[] args)
         {
             Console.Title = "PassGen";
@@ -163,6 +202,8 @@ namespace myapp
 
         string lexicon = "";
 
+        
+        string Network = ping();
 
             while (true)
             {
@@ -272,19 +313,36 @@ namespace myapp
                 Console.ResetColor();
                 Console.WriteLine(border_ascci);
 
-                if (await Check_if_pawnd(password))
+                if (Network == "down")
+                {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("HIBP currently not available");
+                Console.ResetColor();
+                }
+
+                else if (await Check_if_pawnd(password) == "0")
+                {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("HIBP currently not available");
+                Console.ResetColor();
+                }
+
+                else if (await Check_if_pawnd(password) == "true")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Password got leaked :/ please change !!");
                     Console.ResetColor();
                 }
-                else
+                else if (await Check_if_pawnd (password) == "false")
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("Password not leaked :) ");
                     Console.ResetColor();
                 }
+
+                
+
 
                 Console.ResetColor();
                 Console.ResetColor();
