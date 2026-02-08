@@ -103,9 +103,6 @@ namespace myapp
 
         static string gethash()
         {
-            using HttpClient client = new HttpClient();
-
-
 
             int i = 0;
             while (i < 3)
@@ -132,8 +129,6 @@ namespace myapp
                     using var hmac = new HMACSHA256(hash);
                     byte[] combinedHashBytes = hmac.ComputeHash(hash_21);
 
-
-
                     return BitConverter.ToString(combinedHashBytes).Replace("-", "");
                 }
                 catch
@@ -150,6 +145,10 @@ namespace myapp
             byte[] hash_2 = SHA256.HashData(randomData);
             return BitConverter.ToString(hash_2).Replace("-", "");
         }
+
+
+
+
 
 
         static string ping()
