@@ -18,15 +18,15 @@ E#t      ;##D.    L##, EG.      EG.              .G#t        tt ..         G#E
 
 
 **Created By:**
-@Neevio-Source
+@Nevio-Source
 
-A secure password generator which usses strong entropi 
+A secure CLI‑based password generator with support for customizable length, Unicode options, and breach checking.
 
 
 ## Table of Contents 
 
 - [Overview](#overview)
-- [Features](#features)
+- [Features](#Features)
 - [Architecture](#architecture)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -36,15 +36,13 @@ A secure password generator which usses strong entropi
 
 More detailed description of the project.
 
-- Motivation / background
+Motivation:
+I created PassGen to ensure strong, unpredictable passwords. All planned features aim to maximize security and usability.
 
-  I wanted to creat a password generator because I wanted to make sure its secure.
-  I addet all the features I thougt were importend to include
-
-- Goals of the project
-  
-  1. Make sure the password is purly random
-  2. Making sure the password isn`t known
+Goals:
+1. Generate purely random passwords.
+2. Avoid known passwords via HIBP checks.
+3. Provide flexible Unicode support.
 
 <br>
 
@@ -52,10 +50,10 @@ More detailed description of the project.
 ## Features
 
 - Choosing Password length
-- Choos wether or not using spezial Unicodes for the password
+- Choos whether or not using special Unicode characters for the password
 - Checking with [HIBP](https://haveibeenpwned.com/) if the password is known 
 
-**Planed Feutures**
+**Planned Features**
 
 - Store the password in a local database
 
@@ -66,8 +64,6 @@ More detailed description of the project.
 The application is a single-file, console-based password generator with a modular
 functional architecture. While implemented in one class, the program is conceptually
 split into clearly separated responsibilities.
-
---
 
 ### High-Level Overview
 
@@ -82,8 +78,6 @@ These layers interact linearly and do not share mutable global state.
 
 <br>
 
---
-
 ### 1. User Interface Layer
 
 Responsible for all user interaction via the console.
@@ -97,8 +91,6 @@ Includes:
 This layer does not perform any cryptographic or network logic directly.
 
 <br>
---
-
 
 ### 2. Entropy & Password Generation Layer
 
@@ -118,8 +110,6 @@ The generator is designed to:
 
 <br>
 
---
-
 ### 3. Network & External Validation Layer
 
 Responsible for optional online validation of generated passwords.
@@ -138,8 +128,6 @@ This layer is optional and does not affect password generation itself.
 
 <br>
 
---
-
 ### 4. Utility & Cryptographic Functions
 
 Low-level helpers used by higher layers.
@@ -154,8 +142,6 @@ These functions are stateless and reusable.
 
 <br>
 
---
-
 ### Design Characteristics
 
 - Single-process, single-threaded execution model
@@ -167,7 +153,6 @@ These functions are stateless and reusable.
 This architecture favors clarity, security, and predictability over abstraction
 or framework complexity.
 
-<br>
 
 ## Requirements
 
@@ -181,12 +166,10 @@ What is required to build or run the project?
 
 **Windows**
   1. Download the ``Passgen_windows.exe`` file from the latest release.
-  2. Start the programm by clicking the exe. Or Open Powershell navigate to the folder with the exe and execute
+  2. Start the program by clicking the exe. Or Open Powershell navigate to the folder with the exe and execute
   ```bash
   start Passgen_windows.exe
   ```
-
-
 **Linux**
 
   ``Binary``
@@ -199,7 +182,7 @@ What is required to build or run the project?
   ```bash
   ./Passgen_linux
   ```
---
+
 
   ``Deb``
   1. Download ``passgen_x.x.x_amd64.deb`` from the latest release 
@@ -207,5 +190,4 @@ What is required to build or run the project?
   ```
   sudo apt install ./passgen_x.x.x_amd64.deb
   ```
-  3. Now you can execute the programm by typing ``passgen`` in your terminal
-
+  3. Now you can execute the program by typing ``passgen`` in your terminal
