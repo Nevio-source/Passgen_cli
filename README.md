@@ -26,7 +26,7 @@ A secure password generator which usses strong entropi
 ## Table of Contents 
 
 - [Overview](#overview)
-- [Features](#Features)
+- [Features](#features)
 - [Architecture](#architecture)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -67,6 +67,8 @@ The application is a single-file, console-based password generator with a modula
 functional architecture. While implemented in one class, the program is conceptually
 split into clearly separated responsibilities.
 
+--
+
 ### High-Level Overview
 
 The program consists of four main conceptual layers:
@@ -79,6 +81,8 @@ The program consists of four main conceptual layers:
 These layers interact linearly and do not share mutable global state.
 
 <br>
+
+--
 
 ### 1. User Interface Layer
 
@@ -93,6 +97,8 @@ Includes:
 This layer does not perform any cryptographic or network logic directly.
 
 <br>
+--
+
 
 ### 2. Entropy & Password Generation Layer
 
@@ -112,6 +118,8 @@ The generator is designed to:
 
 <br>
 
+--
+
 ### 3. Network & External Validation Layer
 
 Responsible for optional online validation of generated passwords.
@@ -130,6 +138,8 @@ This layer is optional and does not affect password generation itself.
 
 <br>
 
+--
+
 ### 4. Utility & Cryptographic Functions
 
 Low-level helpers used by higher layers.
@@ -144,6 +154,8 @@ These functions are stateless and reusable.
 
 <br>
 
+--
+
 ### Design Characteristics
 
 - Single-process, single-threaded execution model
@@ -155,6 +167,7 @@ These functions are stateless and reusable.
 This architecture favors clarity, security, and predictability over abstraction
 or framework complexity.
 
+<br>
 
 ## Requirements
 
@@ -172,6 +185,8 @@ What is required to build or run the project?
   ```bash
   start Passgen_windows.exe
   ```
+
+
 **Linux**
 
   ``Binary``
@@ -184,7 +199,7 @@ What is required to build or run the project?
   ```bash
   ./Passgen_linux
   ```
-
+--
 
   ``Deb``
   1. Download ``passgen_x.x.x_amd64.deb`` from the latest release 
