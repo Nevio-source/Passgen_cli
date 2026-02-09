@@ -178,7 +178,7 @@ What is required to build or run the project?
   ```
   sudo chmod +x Passgen_linux
   ```
-  3. Now you can execute the with
+  3. Now you can execute it with
   ```bash
   ./Passgen_linux
   ```
